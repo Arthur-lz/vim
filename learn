@@ -15,3 +15,8 @@ answer: setup new font "DaddyTimeMono Nerd Font Mono" and alert alacritty.yml's 
 Git
 1.First push to github, use command: git push remote add origin https://github.com/yourRepository,
 2.After push to github, use command: git push origin or git push
+
+
+##########################################################################################
+pcmanfc
+it can open file manager
