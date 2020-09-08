@@ -19,6 +19,9 @@ Plug 'vim-airline/vim-airline'
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'connorholyday/vim-snazzy'
 Plug 'airblade/vim-gitgutter'
+Plug 'mbbill/undotree'
+Plug 'majutsushi/tagbar'
+Plug 'ludovicchabant/vim-gutentags'
 call plug#end()
 "=============================================================================================
 "gitgutter config=====================================
@@ -32,12 +35,34 @@ let g:gitgutter_sign_removed_first_line = '^^'
 let g:gitgutter_sign_modified_removed = 'ww'
 let g:gitgutter_diff_relative_to = 'working_tree'
 "let g:gitgutter_preview_win_floating = 1
+set updatetime=1
 "
 "gitgutter config end.==============================
 "
 color snazzy
 let g:SnazzyTransparent=1
-"coc config
+
+"设置linux4.0.1内核的ctags索引
+"set tags=/home/arthur/source/linux-4.0.1/tags
+" 使用F2键来执行Ctrl+w+w, 也就是切换同一个终端下的不同分屏
+nmap <F2> <C-w>w
+" tagbar设置===================================================
+" tagbar用来显示当前文件的类、结构、函数列表
+let g:tagbar_width=35
+nmap <F8> :TagbarToggle<CR> 
+" tagbar=======================================================
+"
+nmap ut :UndotreeShow<CR>
+nmap uu :UndotreeHide<CR>
+"
+"gutentags 配置
+let g:gutentags_project_root = ['.root', '.svn', '.git', '.hg', '.project']
+let g:gutentags_ctags_extra_args = ['--fields=+niazS', '--extra=+q']
+let g:gutentags_ctags_extra_args += ['--c++-kinds=+px']
+let g:gutentags_ctags_extra_args += ['--c-kinds=+px']
+"
+"
+"coc config=====================================================
 set signcolumn=yes
 nmap <space>t :CocCommand explorer<CR>
 inoremap <silent><expr> <TAB>
