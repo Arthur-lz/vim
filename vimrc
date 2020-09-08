@@ -1,4 +1,4 @@
-"autocmd BufWritePost $MYVIMRC source $MYVIMRC
+autocmd BufWritePost $MYVIMRC source $MYVIMRC
 set nu
 set cursorline " 显示行线
 "set cursorcolumn " 显示列线
@@ -17,8 +17,26 @@ au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g
 call plug#begin('~/.vim/plugged')
 Plug 'vim-airline/vim-airline'
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
+Plug 'connorholyday/vim-snazzy'
+Plug 'airblade/vim-gitgutter'
 call plug#end()
-
+"=============================================================================================
+"gitgutter config=====================================
+"
+let g:gitgutter_enabled=1
+let g:gitgutter_signs=1
+let g:gitgutter_sign_added = '☻'
+let g:gitgutter_sign_modified = '⚡'
+let g:gitgutter_sign_removed = 'zz'
+let g:gitgutter_sign_removed_first_line = '^^'
+let g:gitgutter_sign_modified_removed = 'ww'
+let g:gitgutter_diff_relative_to = 'working_tree'
+"let g:gitgutter_preview_win_floating = 1
+"
+"gitgutter config end.==============================
+"
+color snazzy
+let g:SnazzyTransparent=1
 "coc config
 set signcolumn=yes
 nmap <space>t :CocCommand explorer<CR>
