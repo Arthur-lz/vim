@@ -1,22 +1,39 @@
-Ranger study
+让ranger可以对使用git管理的文件显示其git状态
+修改ranger的配置文件rc.conf，set vcs_aware true即可
 
-config rc.conf 
-line 59: set vcs_aware true	#it will open git status in ranger.
 ##########################################################################################
-System config
-display image in the background
-need setup feh, compton, alacritty
-and in i3 config file, add config about fech, and exec compton, and exec auto alacritty
+安装完i3后，默认情况下是不会在电脑上生成i3bar的配置文件i3status.conf的,如果需要定制显示i3bar，需要自己建立i3status.conf文件，
+之后在修改i3的配置文件config，在bar{}中指定i3bar配置文件所在位置，同时使用配置文件打开i3bar，如下这样：
+status_command i3status --config ~/.config/i3/i3status.conf
+同时需要将原来在bar{}中的启动i3bar命令注释，即将status_command i3status这句注释掉。
 
-alacritty font error, the word 'i' and 'e' always under other word.
-answer: setup new font "DaddyTimeMono Nerd Font Mono" and alert alacritty.yml's font.
+##########################################################################################
+
+系统配置（或者称为i3的配置)
+1.在终端上显示背景图片
+  第一步：需要安装feh, compton, alacritty三个文件
+  feh, 用于显示图片，可以理解为图片浏览器。
+  compton, 用于让终端可以背景透明？
+  alacritty, 一个第三方的终端模似器，采用GPU来实现界面渲染，速度快，可方便的通过设置配置文件来实现背景透明度设置。
+
+  第二步：需要将三个程序添加到i3的配置文件config中添加自动启动
+
+
+2.alacritty安装后显示的文字出现重叠问题（这种重叠现象多出现在字符i,e,m与其他字符间）
+  解决办法:
+  第一步： 安装其他字体，如DaddyTimeMono Nerd Font Mono
+  第二步： 修改alacritty的配置文件alacritty.yml文件，将原来的字体换成DaddyTimeMono Nerd Font Mono
+  第三步： restart i3
 
 ##########################################################################################
 Git
-1.First push to github, use command: git push remote add origin https://github.com/yourRepository,
-2.After push to github, use command: git push origin or git push
+1.首次在电脑上使用git上传文件到github仓库时，命令像是这样的：
+  git push remote add origin https://github.com/yourRepository
+
+2.之后再次使用git命令上push文件时，使用的命令是: 
+  git push 或者git push origin
 
 
 ##########################################################################################
 pcmanfc
-it can open file manager
+pcmanfc命令用于打开一个文件浏览器;如果执行pcmanfc --desktop则可以打开桌面，这是在命令行中打开的桌面哟
