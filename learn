@@ -11,4 +11,7 @@ and in i3 config file, add config about fech, and exec compton, and exec auto al
 alacritty font error, the word 'i' and 'e' always under other word.
 answer: setup new font "DaddyTimeMono Nerd Font Mono" and alert alacritty.yml's font.
 
-
+##########################################################################################
+Git
+1.First push to github, use command: git push remote add origin https://github.com/yourRepository,
+2.After push to github, use command: git push origin or git push
