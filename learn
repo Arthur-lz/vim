@@ -1,0 +1,9 @@
+Ranger study
+
+config rc.conf 
+line 59: set vcs_aware true	#it will open git status in ranger.
+##########################################################################################
+System config
+display image in the background
+need setup feh, compton, alacritty
+and in i3 config file, add config about fech, and exec compton, and exec auto alacritty

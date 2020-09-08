@@ -1,0 +1,31 @@
+git init
+
+git status
+
+git add .
+
+git commit -m  "message some you want to say for this commit"
+
+git push remote add origin https://github.com/Arthur-lz/vim.git
+
+git pull
+
+
+git config credential.helper store # before send git push, input it, could save your pass and username. 
+
+
+git branch newbranch
+
+git checkout newbranch
+
+git checkout master
+
+git merage
+
+git branch -d newbranch
+
+git clone https://github.com/Arthur-lz/vim.git
+
+git rm  --cached somefile
+
+
