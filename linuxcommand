@@ -1,0 +1,5 @@
+lsb_release -a 查看linux系统版本，也可以使用cat /proc/version
+
+uname -a 查看内核版本
+
+
