@@ -7,6 +7,10 @@ git add .
 git commit -m  "message some you want to say for this commit"
 
 git push remote add origin https://github.com/Arthur-lz/vim.git
+或者
+git remote add origin https://github.com/Arthur-lz/vim.git
+git push -u origin master 
+由上面这两句来分两步完成；因为有的时候可能直接执行上面的第一种方式会失败。
 
 git pull
 

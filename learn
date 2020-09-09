@@ -65,3 +65,9 @@ inoremap就只在插入(insert)模式下生效
 vnoremap只在visual模式下生效
 nnoremap就在normal模式下(狂按esc后的模式)生效
 
+
+###########################################################################################
+ufw
+打开manjaro的防火墙：sudo ufw enable
+查看防火墙状态：sudo ufw status
+可以使用图形界面的gufw来查看防火墙配置：sudo gufw
