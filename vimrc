@@ -21,27 +21,43 @@ Plug 'connorholyday/vim-snazzy'
 Plug 'airblade/vim-gitgutter'
 Plug 'mbbill/undotree'
 Plug 'majutsushi/tagbar'
-Plug 'ludovicchabant/vim-gutentags'
+"Plug 'ludovicchabant/vim-gutentags'
+Plug 'scrooloose/nerdcommenter'
 call plug#end()
 "=============================================================================================
 "gitgutter config=====================================
 "
 let g:gitgutter_enabled=1
-let g:gitgutter_signs=1
-let g:gitgutter_sign_added = '☻'
-let g:gitgutter_sign_modified = '⚡'
-let g:gitgutter_sign_removed = 'zz'
-let g:gitgutter_sign_removed_first_line = '^^'
-let g:gitgutter_sign_modified_removed = 'ww'
-let g:gitgutter_diff_relative_to = 'working_tree'
+"let g:gitgutter_signs=1
+"let g:gitgutter_sign_added = '☻'
+"let g:gitgutter_sign_modified = '⚡'
+"let g:gitgutter_sign_removed = 'zz'
+"let g:gitgutter_sign_removed_first_line = '^^'
+"let g:gitgutter_sign_modified_removed = 'ww'
+"let g:gitgutter_diff_relative_to = 'working_tree'
+
+let g:gitgutter_sign_allow_clobber = 0
+let g:gitgutter_map_keys = 0
+let g:gitgutter_override_sign_column_highlight = 0
+let g:gitgutter_preview_win_floating = 1
+let g:gitgutter_sign_added = '▎'
+let g:gitgutter_sign_modified = '░'
+let g:gitgutter_sign_removed = '▏'
+let g:gitgutter_sign_removed_first_line = '▔'
+let g:gitgutter_sign_modified_removed = '▒'
 "let g:gitgutter_preview_win_floating = 1
-set updatetime=1
+nnoremap <LEADER>gf :GitGutterFold<CR>
+nnoremap H :GitGutterPreviewHunk<CR>
+nnoremap <LEADER>g- :GitGutterPrevHunk<CR>
+nnoremap <LEADER>g= :GitGutterNextHunk<CR>
 "
 "gitgutter config end.==============================
 "
 color snazzy
 let g:SnazzyTransparent=1
-
+"
+let mapleader=","
+"nmap <leader>c<space> NERDCommenterToggle
 "设置linux4.0.1内核的ctags索引
 "set tags=/home/arthur/source/linux-4.0.1/tags
 " 使用F2键来执行Ctrl+w+w, 也就是切换同一个终端下的不同分屏
@@ -52,18 +68,31 @@ let g:tagbar_width=35
 nmap <F8> :TagbarToggle<CR> 
 " tagbar=======================================================
 "
-nmap ut :UndotreeShow<CR>
-nmap uu :UndotreeHide<CR>
+nnoremap <F5> :UndotreeToggle<cr>
 "
 "gutentags 配置
-let g:gutentags_project_root = ['.root', '.svn', '.git', '.hg', '.project']
-let g:gutentags_ctags_extra_args = ['--fields=+niazS', '--extra=+q']
-let g:gutentags_ctags_extra_args += ['--c++-kinds=+px']
-let g:gutentags_ctags_extra_args += ['--c-kinds=+px']
+"let g:gutentags_project_root = ['.root', '.svn', '.git', '.hg', '.project']
+"let g:gutentags_ctags_extra_args = ['--fields=+niazS', '--extra=+q']
+"let g:gutentags_ctags_extra_args += ['--c++-kinds=+px'] 
+"let g:gutentags_ctags_extra_args += ['--c-kinds=+px']
+"function! s:get_gutentags_status(mods) abort
+"              let l:msg = ''
+"              if index(a:mods, 'ctags') >= 0
+"                 let l:msg .= '♨'
+"               endif
+"               if index(a:mods, 'cscope') >= 0
+"                 let l:msg .= '♺'
+"               endif
+"               return l:msg
+"          endfunction
+"
+":set statusline+=%{gutentags#statusline_cb(
+"           \function('<SID>get_gutentags_status'))}
 "
 "
 "coc config=====================================================
 set signcolumn=yes
+set updatetime=100
 nmap <space>t :CocCommand explorer<CR>
 inoremap <silent><expr> <TAB>
       \ pumvisible() ? "\<C-n>" :
@@ -97,3 +126,7 @@ nmap <silent> gi <Plug>(coc-implementation)
 nmap <silent> gr <Plug>(coc-references)
 "coc config end.
 "
+if has("persistent_undo")
+    set undodir=$HOME/.config/undobak/
+    set undofile
+endif
