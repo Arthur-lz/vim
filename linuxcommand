@@ -2,4 +2,4 @@ lsb_release -a 查看linux系统版本，也可以使用cat /proc/version
 
 uname -a 查看内核版本
 
-
+ps -aux 查看进程列表，显示比较全面的命令组合。

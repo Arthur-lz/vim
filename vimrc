@@ -1,5 +1,6 @@
 autocmd BufWritePost $MYVIMRC source $MYVIMRC
 set nu
+set relativenumber
 set cursorline " 显示行线
 "set cursorcolumn " 显示列线
 map S :w<cr>
@@ -12,6 +13,18 @@ set smartcase
 set wrap
 set wildmenu
 set scrolloff=5
+"
+"
+set tw=0
+set indentexpr=
+set foldmethod=indent
+set foldlevel=99
+set foldenable  " 允许折叠
+set formatoptions-=tc
+set splitright
+set splitbelow
+set nocompatible  "去掉讨厌的有关vi一致性模式，避免以前版本的一些bug和局限
+"
 au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif"
 "=============================================================================================
 call plug#begin('~/.vim/plugged')
@@ -23,6 +36,7 @@ Plug 'mbbill/undotree'
 Plug 'majutsushi/tagbar'
 "Plug 'ludovicchabant/vim-gutentags'
 Plug 'scrooloose/nerdcommenter'
+Plug 'honza/vim-snippets'
 call plug#end()
 "=============================================================================================
 "gitgutter config=====================================
@@ -59,7 +73,7 @@ let g:SnazzyTransparent=1
 let mapleader=","
 "nmap <leader>c<space> NERDCommenterToggle
 "设置linux4.0.1内核的ctags索引
-"set tags=/home/arthur/source/linux-4.0.1/tags
+set tags=/home/arthur/source/linux-4.0.1/tags
 " 使用F2键来执行Ctrl+w+w, 也就是切换同一个终端下的不同分屏
 nmap <F2> <C-w>w
 " tagbar设置===================================================
