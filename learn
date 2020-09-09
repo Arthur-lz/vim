@@ -71,3 +71,11 @@ ufw
 打开manjaro的防火墙：sudo ufw enable
 查看防火墙状态：sudo ufw status
 可以使用图形界面的gufw来查看防火墙配置：sudo gufw
+
+
+###########################################################################################
+安装gcc, gdb(版本10.2.0gcc，9.2gdb)
+sudo pacman -S gcc
+sudo pacman -S gdb
+
+
