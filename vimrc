@@ -1,4 +1,5 @@
 autocmd BufWritePost $MYVIMRC source $MYVIMRC
+let mapleader=","
 set nu
 set relativenumber
 set cursorline " 显示行线
@@ -24,21 +25,31 @@ set formatoptions-=tc
 set splitright
 set splitbelow
 set nocompatible  "去掉讨厌的有关vi一致性模式，避免以前版本的一些bug和局限
+" 自动缩进
+set autoindent
+
+set cindent
 "
 au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif"
 "=============================================================================================
 call plug#begin('~/.vim/plugged')
-Plug 'vim-airline/vim-airline'
+Plug 'vim-airline/vim-airline' "vim打开文件时，显示在vim最下面的状态栏"
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
-Plug 'connorholyday/vim-snazzy'
-Plug 'airblade/vim-gitgutter'
+Plug 'connorholyday/vim-snazzy'  "终端配色，背景透明相关"
+Plug 'airblade/vim-gitgutter'  "动态显示未保存内容与git仓库中文件差异"
 Plug 'mbbill/undotree'
 Plug 'majutsushi/tagbar'
 "Plug 'ludovicchabant/vim-gutentags'
-Plug 'scrooloose/nerdcommenter'
-Plug 'honza/vim-snippets'
+"Plug 'scrooloose/nerdcommenter'
+Plug 'preservim/nerdcommenter'   "代码批量注释"
+Plug 'honza/vim-snippets'  "代码补全，与coc-snippets配合使用"
+Plug 'godlygeek/tabular'  "代码对齐"
 call plug#end()
 "=============================================================================================
+if exists(":Tabularize")
+      noremap t= :Tabularize /=<CR>
+      noremap t: :Tabularize /:\zs<CR>
+    endif
 "gitgutter config=====================================
 "
 let g:gitgutter_enabled=1
@@ -70,7 +81,6 @@ nnoremap <LEADER>g= :GitGutterNextHunk<CR>
 color snazzy
 let g:SnazzyTransparent=1
 "
-let mapleader=","
 "nmap <leader>c<space> NERDCommenterToggle
 "设置linux4.0.1内核的ctags索引
 set tags=/home/arthur/source/linux-4.0.1/tags
@@ -102,6 +112,29 @@ nnoremap <F5> :UndotreeToggle<cr>
 "
 ":set statusline+=%{gutentags#statusline_cb(
 "           \function('<SID>get_gutentags_status'))}
+" Add spaces after comment delimiters by default
+let g:NERDSpaceDelims = 1
+
+" Use compact syntax for prettified multi-line comments
+let g:NERDCompactSexyComs = 1
+
+" Align line-wise comment delimiters flush left instead of following code indentation
+let g:NERDDefaultAlign = 'left'
+
+" Set a language to use its alternate delimiters by default
+let g:NERDAltDelims_java = 1
+
+" Add your own custom formats or override the defaults
+let g:NERDCustomDelimiters = { 'c': { 'left': '/**','right': '*/' } }
+
+" Allow commenting and inverting empty lines (useful when commenting a region)
+let g:NERDCommentEmptyLines = 1
+
+" Enable trimming of trailing whitespace when uncommenting
+let g:NERDTrimTrailingWhitespace = 1
+
+" Enable NERDCommenterToggle to check all selected lines is commented or not 
+let g:NERDToggleCheckAllLines = 1
 "
 "
 "coc config=====================================================
