@@ -14,7 +14,7 @@
 #include <string.h>
 #include <pthread.h>
 #include <sys/time.h>
-#include <arpa/inet.h>
+#include <arpa/inet.h> // inet_ntoa引用自arpa/inet.h
 
 #define MAXCONNECTION  40
 #define msleep(x)  (usleep(x*1000))
@@ -31,6 +31,7 @@ struct Data array[MAXCONNECTION] = {0};
 void *do_thread_showconnect(void *arg);
 void *do_thread_clientopt(void *arg);
 int optthreadcount = 0;
+
 int main(int argc, char *argv[])
 {
 	int sockfd;
