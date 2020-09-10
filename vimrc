@@ -1,5 +1,4 @@
 autocmd BufWritePost $MYVIMRC source $MYVIMRC
-let mapleader=","
 set nu
 set relativenumber
 set cursorline " 显示行线
@@ -16,6 +15,7 @@ set wildmenu
 set scrolloff=5
 "
 "
+"
 set tw=0
 set indentexpr=
 set foldmethod=indent
@@ -29,28 +29,28 @@ set nocompatible  "去掉讨厌的有关vi一致性模式，避免以前版本�
 set autoindent
 
 set cindent
-"
 au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif"
 "=============================================================================================
 call plug#begin('~/.vim/plugged')
-Plug 'vim-airline/vim-airline' "vim打开文件时，显示在vim最下面的状态栏"
+"vim打开文件时，显示在vim最下面的状态栏
+Plug 'vim-airline/vim-airline'
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
-Plug 'connorholyday/vim-snazzy'  "终端配色，背景透明相关"
-Plug 'airblade/vim-gitgutter'  "动态显示未保存内容与git仓库中文件差异"
+"终端配色，背景透明相关
+Plug 'connorholyday/vim-snazzy' 
+"动态显示未保存内容与git仓库中文件差异
+Plug 'airblade/vim-gitgutter' 
 Plug 'mbbill/undotree'
 Plug 'majutsushi/tagbar'
 "Plug 'ludovicchabant/vim-gutentags'
 "Plug 'scrooloose/nerdcommenter'
-Plug 'preservim/nerdcommenter'   "代码批量注释"
-Plug 'honza/vim-snippets'  "代码补全，与coc-snippets配合使用"
-Plug 'godlygeek/tabular'  "代码对齐"
+"代码批量注释
+Plug 'preservim/nerdcommenter'  
+"代码补全，与coc-snippets配合使用
+Plug 'honza/vim-snippets'  
+"代码对齐
+"Plug 'godlygeek/tabular' 
 call plug#end()
 "=============================================================================================
-if exists(":Tabularize")
-      noremap t= :Tabularize /=<CR>
-      noremap t: :Tabularize /:\zs<CR>
-    endif
-"gitgutter config=====================================
 "
 let g:gitgutter_enabled=1
 "let g:gitgutter_signs=1
@@ -71,6 +71,7 @@ let g:gitgutter_sign_removed = '▏'
 let g:gitgutter_sign_removed_first_line = '▔'
 let g:gitgutter_sign_modified_removed = '▒'
 "let g:gitgutter_preview_win_floating = 1
+let mapleader=","
 nnoremap <LEADER>gf :GitGutterFold<CR>
 nnoremap H :GitGutterPreviewHunk<CR>
 nnoremap <LEADER>g- :GitGutterPrevHunk<CR>
@@ -78,8 +79,8 @@ nnoremap <LEADER>g= :GitGutterNextHunk<CR>
 "
 "gitgutter config end.==============================
 "
-color snazzy
 let g:SnazzyTransparent=1
+color snazzy "这一句必须放在 let g:SnazzyTransparent=1后面，否则透明背景失效！！
 "
 "nmap <leader>c<space> NERDCommenterToggle
 "设置linux4.0.1内核的ctags索引
@@ -94,49 +95,10 @@ nmap <F8> :TagbarToggle<CR>
 "
 nnoremap <F5> :UndotreeToggle<cr>
 "
-"gutentags 配置
-"let g:gutentags_project_root = ['.root', '.svn', '.git', '.hg', '.project']
-"let g:gutentags_ctags_extra_args = ['--fields=+niazS', '--extra=+q']
-"let g:gutentags_ctags_extra_args += ['--c++-kinds=+px'] 
-"let g:gutentags_ctags_extra_args += ['--c-kinds=+px']
-"function! s:get_gutentags_status(mods) abort
-"              let l:msg = ''
-"              if index(a:mods, 'ctags') >= 0
 "                 let l:msg .= '♨'
-"               endif
-"               if index(a:mods, 'cscope') >= 0
 "                 let l:msg .= '♺'
-"               endif
-"               return l:msg
-"          endfunction
 "
-":set statusline+=%{gutentags#statusline_cb(
-"           \function('<SID>get_gutentags_status'))}
-" Add spaces after comment delimiters by default
-let g:NERDSpaceDelims = 1
 
-" Use compact syntax for prettified multi-line comments
-let g:NERDCompactSexyComs = 1
-
-" Align line-wise comment delimiters flush left instead of following code indentation
-let g:NERDDefaultAlign = 'left'
-
-" Set a language to use its alternate delimiters by default
-let g:NERDAltDelims_java = 1
-
-" Add your own custom formats or override the defaults
-let g:NERDCustomDelimiters = { 'c': { 'left': '/**','right': '*/' } }
-
-" Allow commenting and inverting empty lines (useful when commenting a region)
-let g:NERDCommentEmptyLines = 1
-
-" Enable trimming of trailing whitespace when uncommenting
-let g:NERDTrimTrailingWhitespace = 1
-
-" Enable NERDCommenterToggle to check all selected lines is commented or not 
-let g:NERDToggleCheckAllLines = 1
-"
-"
 "coc config=====================================================
 set signcolumn=yes
 set updatetime=100
