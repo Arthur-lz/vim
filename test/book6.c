@@ -41,11 +41,20 @@ int main(int argc, char *argv[])
 	pthread_detach(tid);
 
 	char buffer[1024] = {0};
-
+	char a=0;
 	while (1) {
 		ret = read(0, buffer, 1024);
 		if (ret > 1024) {
 			continue;			
+		}
+		else if (ret == 2) {
+			if (buffer[0] == 'e') {
+				break;	
+			}
+		}
+		if (a == 0) {
+			printf("ret=%d, buf=%s",ret, buffer);
+			a=1;
 		}
 		write(sd, buffer, ret);
 	}

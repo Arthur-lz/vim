@@ -30,6 +30,7 @@ struct Data
 struct Data array[MAXCONNECTION] = {0};
 void *do_thread_showconnect(void *arg);
 void *do_thread_clientopt(void *arg);
+void *accept_thread(void *arg);
 int optthreadcount = 0;
 
 int main(int argc, char *argv[])
@@ -66,45 +67,101 @@ int main(int argc, char *argv[])
 	pthread_t tid;
 	pthread_create(&tid, NULL, do_thread_showconnect, NULL);
 	pthread_detach(tid);
-
+	char buf[2] = {0};
+	pthread_t tid2;
+        pthread_create(&tid2, NULL, accept_thread, (void *)sockfd);
+        pthread_detach(tid2);
 	while(1){
+		//将accept移到线程里等等客户端的请求，这里改用响应服务器用户在终端输入e+回车退出服务器。
+		if (read(0, buf, 2) <= 0) {
+			break;	
+		}
+		else {
+			if (buf[0]=='e') {
+			break;	
+			}
+		}
 /* accept 阻塞执行，当有客户端请求接入时，accept才会返回，程序继续向下执行
  * accept阻塞等待客户端请求。
  *
  *
  */
-		peersockfd = accept(sockfd, (struct sockaddr *)&peeraddr, &len);
-		if (peersockfd < 0) {
-			perror("accept error");
-			return -3;			
-		}
-		tmp.sockfd = peersockfd;
-		tmp.in = peeraddr.sin_addr;
-		tmp.port = ntohs(peeraddr.sin_port);
-		tmp.live = 1;
-
-		for (i = 0; i < MAXCONNECTION; i++) {
-			if (array[i].live == 0) {
-				array[i] = tmp;
-				break;				
-			}
-		}
-
-		if (MAXCONNECTION == i) {
-			write(peersockfd, message, strlen(message));
-			close(peersockfd);
-			continue;
-		}
-		
-		pthread_t tid2;
-		optthreadcount++;
-		// pthread_create 
-		pthread_create(&tid2, NULL, do_thread_clientopt, (void *)i);
-		pthread_detach(tid2);// detach不会向join那样阻塞主线程，其立即返回。
+/*
+ *                peersockfd = accept(sockfd, (struct sockaddr *)&peeraddr, &len);
+ *                if (peersockfd < 0) {
+ *                        perror("accept error");
+ *                        return -3;			
+ *                }
+ *                tmp.sockfd = peersockfd;
+ *                tmp.in = peeraddr.sin_addr;
+ *                tmp.port = ntohs(peeraddr.sin_port);
+ *                tmp.live = 1;
+ *
+ *                for (i = 0; i < MAXCONNECTION; i++) {
+ *                        if (array[i].live == 0) {
+ *                                array[i] = tmp;
+ *                                break;				
+ *                        }
+ *                }
+ *
+ *                if (MAXCONNECTION == i) {
+ *                        write(peersockfd, message, strlen(message));
+ *                        close(peersockfd);
+ *                        continue;
+ *                }
+ *                
+ *                pthread_t tid2;
+ *                optthreadcount++;
+ *                // pthread_create 
+ *                pthread_create(&tid2, NULL, do_thread_clientopt, (void *)i);
+ *                pthread_detach(tid2);// detach不会向join那样阻塞主线程，其立即返回。
+ */
 	}
+
+	close(sockfd);
 	return 0;
 }
 
+void *accept_thread(void *arg)
+{
+	int peersockfd;
+        struct sockaddr_in peeraddr;
+        socklen_t len = sizeof(struct sockaddr_in);
+        struct Data tmp;
+        char *message = "too more connection, connection fail";
+        int i;
+	int sockfd = (int)arg;
+	while(1){
+	peersockfd = accept(sockfd, (struct sockaddr *)&peeraddr, &len);
+                   if (peersockfd < 0) {
+                           perror("accept error");
+                           exit(1);
+                   }
+                   tmp.sockfd = peersockfd;
+                   tmp.in = peeraddr.sin_addr;
+                   tmp.port = ntohs(peeraddr.sin_port);
+                   tmp.live = 1;
+  
+                   for (i = 0; i < MAXCONNECTION; i++) {
+                           if (array[i].live == 0) {
+                                   array[i] = tmp;
+                                   break;
+                           }
+                   }
+  
+                   if (MAXCONNECTION == i) {
+                           write(peersockfd, message, strlen(message));
+                           close(peersockfd);
+                           continue;
+                   }
+  
+                   pthread_t tid2;
+                   optthreadcount++;
+                   // pthread_create
+                   pthread_create(&tid2, NULL, do_thread_clientopt, (void *)i);
+                   pthread_detach(tid2);// detach不会向join那样阻塞主线程，其立即返回。
+  	}
+}
 
 void *do_thread_showconnect(void *arg)
 {
