@@ -68,6 +68,11 @@ int main(int argc, char *argv[])
 	pthread_detach(tid);
 
 	while(1){
+/* accept 阻塞执行，当有客户端请求接入时，accept才会返回，程序继续向下执行
+ * accept阻塞等待客户端请求。
+ *
+ *
+ */
 		peersockfd = accept(sockfd, (struct sockaddr *)&peeraddr, &len);
 		if (peersockfd < 0) {
 			perror("accept error");
@@ -93,8 +98,9 @@ int main(int argc, char *argv[])
 		
 		pthread_t tid2;
 		optthreadcount++;
+		// pthread_create 
 		pthread_create(&tid2, NULL, do_thread_clientopt, (void *)i);
-		pthread_detach(tid2);
+		pthread_detach(tid2);// detach不会向join那样阻塞主线程，其立即返回。
 	}
 	return 0;
 }
@@ -148,5 +154,6 @@ void *do_thread_clientopt(void *arg)
 	}
 	close(array[num].sockfd);
 	array[num].live = 0;
+	optthreadcount--;
 	}	
 }

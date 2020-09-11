@@ -25,6 +25,13 @@ void *thread2(void *arg) {
 	pthread_mutex_unlock(&m);
 }
 
+ void *threaddo(void *arg) {
+            pthread_mutex_lock(&m);
+	    int p =   (int)arg;
+            printf("thread%d, t=%d\n",p,  t++);
+            pthread_mutex_unlock(&m);
+}
+
 int main(int argc, char *argv[])
 {
 	int ret = 0;
@@ -36,14 +43,14 @@ int main(int argc, char *argv[])
 		exit(EXIT_FAILURE);
 	}
 
-	ret = pthread_create(&p1, NULL, thread1, NULL);
+	ret = pthread_create(&p1, NULL, threaddo, (void *)1);
 
 	if (ret < 0) {
 		perror("pthread1_create error");
 		exit(EXIT_FAILURE);
 	}
 	
-	ret = pthread_create(&p2, NULL, thread2, NULL);
+	ret = pthread_create(&p2, NULL, threaddo, (void *)2);
 
 	if (ret < 0) {
                perror("pthread2_create error");
