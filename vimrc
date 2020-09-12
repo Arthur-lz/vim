@@ -49,9 +49,12 @@ Plug 'preservim/nerdcommenter'
 Plug 'honza/vim-snippets'  
 "代码对齐
 "Plug 'godlygeek/tabular' 
+" markdown-preview用于实时预览正在编辑的md文件，for跟的参数表示只有打开markdown类型的文件时vim才加载下面的这插件,提升vim效率
+Plug 'iamcco/markdown-preview.nvim', { 'do': 'cd app && yarn install', 'for': ['markdown', 'vim-plug']}
 call plug#end()
 "=============================================================================================
 "
+let g:mkdp_browser = ''
 let g:gitgutter_enabled=1
 "let g:gitgutter_signs=1
 "let g:gitgutter_sign_added = '☻'
@@ -78,6 +81,8 @@ nnoremap <LEADER>g- :GitGutterPrevHunk<CR>
 nnoremap <LEADER>g= :GitGutterNextHunk<CR>
 "
 "gitgutter config end.==============================
+"
+"source markdownrc
 "
 let g:SnazzyTransparent=1
 color snazzy "这一句必须放在 let g:SnazzyTransparent=1后面，否则透明背景失效！！

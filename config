@@ -47,6 +47,7 @@ bindsym $mod+Return exec alacritty
 bindsym $mod+Shift+p exec flameshot gui -p ~/.myflamshotpic/
 
 bindsym $mod+p exec firefox
+bindsym $mod+Shift+f exec libreoffice
 # Configure border style <normal|1pixel|pixel xx|none|pixel>
 new_window pixel 1
 new_float normal

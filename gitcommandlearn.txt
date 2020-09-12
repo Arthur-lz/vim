@@ -31,5 +31,31 @@ git branch -d newbranch
 git clone https://github.com/Arthur-lz/vim.git
 
 git rm  --cached somefile
+########################################################################################################
+git diff
+查看本地与git 仓库不同部分；就是说本地文件与仓库中文件差异部分可以列出。
+
+.gitattributes文件中定义的diff行，可以将git不能识别的二进制文件，通过diff来指定filter来转换成可以识别的格式txt
+例如，docx类型的word文件，在没有配置diff前，git diff命令只可以给出二进制文件的属性信息，如文件大小、创建日期的不同，
+如果在.gitattributes文件中增加如下这样一行
+
+*.docx   diff=word
+
+这表示，所有.docx类型的文件将使用word filter命令来将docx类型的文件转换成txt类型git可以识别文件内容的格式，
+要使用word filter需要进行如下配置，
+
+一、安装docx2txt程序
+二、写一个wrapper脚本来变换输出为git期望的格式
+三、配置git来使用这个脚本
+四、git config diff.word.textconv docx2txt
+
+配置之后,执行git diff时，任何以.docx为扩展名的文件，它都应该执行word filter（被定义为docx2txt程序）这将有效地在试图比较他们之前转换word文件为普通的text文件以便比较
+
+########################################################################################################
+
+git show
+git log  显示提交日志
+
+
 
 

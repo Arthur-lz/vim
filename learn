@@ -133,10 +133,39 @@ color snazzy "这一句必须放在 let g:SnazzyTransparent=1后面，如果顺�
 
 
 ###########################################################################################
+动态链接库的管理命令ldconfig
+
+
+###########################################################################################
+安装make
+sudo pacman -S make
+
+###########################################################################################
 gcc arm交叉编译工具链
 1.确认需要的是32bit, 还是64bit, uname -m查一下，我的是x86_64,就是64bit
 
 2.到linaro下载对应的版本
   https://releases.linaro.org/components/toolchain/binaries/latest-7/arm-linux-gnueabihf/gcc-linaro-7.5.0-2019.12-x86_64_arm-linux-gnueabihf.tar.xz
 
-3.
+3.设置工具链环境变量
+  export PATH=$PATH:/opt/develop/gcc-linaro-7.5.0-2019.12-rc1-x86_64_arm-linux-gnueabihf/bin/
+  export LD_LIBRARY_PATH=/opt/develop/gcc-linaro-7.5.0-2019.12-rc1-x86_64_arm-linux-gnueabihf/lib/
+  ldconfig /opt/develop/gcc-linaro-7.5.0-2019.12-rc1-x86_64_arm-linux-gnueabihf/lib/
+  
+4.
+ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- make LicheePi_Zero_480x272LCD_defconfig
+
+
+###########################################################################################
+安装libreoffice
+sudo pacman -S libreoffice 回车执行后，选择still，另一个可选择项是fresh
+still表示稳定版本，fresh表示最新版本
+
+
+###########################################################################################
+安装make(GNU Make 4.3)
+sudo pacman -S make
+
+
+###########################################################################################
+安装clam
