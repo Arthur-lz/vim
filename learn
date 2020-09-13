@@ -169,3 +169,24 @@ sudo pacman -S make
 
 ###########################################################################################
 安装clam
+
+
+###########################################################################################
+tar打包并gzip压缩
+tar -czf outputfilename.tar.gz inputfile
+
+打包并使用bzip2压缩
+tar -cjf output.tar.bz2 inputfile
+
+只打包成tar
+tar -cvf output.tar inputfile
+
+解压*.gz
+tar -xzvf inputfile.tar.gz
+
+解压*.bz2
+tar -xjvf inputfile.tar.bz2
+
+解压*.xz
+tar -xJvf inputfile.tar.xz
+###########################################################################################

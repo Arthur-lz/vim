@@ -1,0 +1,2 @@
+firmware: 固件
+syntax constraints: 语法约束
