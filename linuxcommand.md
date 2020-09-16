@@ -31,3 +31,16 @@ There are some dog and cat, oh, and a pig.
 There are some dogs and cats, oh, and a pigs.
 ```
 >也可以将s命令保存到文件中，来批量修改输出的数据。
+* find
+>查找文件，不区分大小写, 以.o结尾
+```bash
+~$: find . -type f -iname "*.o"
+```
+>删除当前目录下及子目录下所有以.o结尾文件
+```bash
+~$: find . -type f -iname "*.o" | xargs rm -f
+```
+>计算查找到文件数量及总计大小
+```bash
+~$: find . -type f -iname "*.o" | wc 
+```

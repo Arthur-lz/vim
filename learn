@@ -190,3 +190,7 @@ tar -xjvf inputfile.tar.bz2
 解压*.xz
 tar -xJvf inputfile.tar.xz
 ###########################################################################################
+安装qemu
+sudo pacman -S qemu
+
+
