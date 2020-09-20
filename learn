@@ -193,4 +193,9 @@ tar -xJvf inputfile.tar.xz
 安装qemu
 sudo pacman -S qemu
 
+###########################################################################################
+clangd就是LLVM团队开发的C系语言补全器，可以为C、C++、Objective-C等语言提供代码补全、跳转等服务。
+作为知名C++ completer，可以与clangd配合工作的编辑器插件不在少数。在Vim编辑器上就有YCM、vim-lsp等插件
+
+
 
