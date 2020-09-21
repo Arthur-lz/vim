@@ -194,8 +194,23 @@ tar -xJvf inputfile.tar.xz
 sudo pacman -S qemu
 
 ###########################################################################################
-clangd就是LLVM团队开发的C系语言补全器，可以为C、C++、Objective-C等语言提供代码补全、跳转等服务。
+clangd是LLVM团队开发的C系语言补全器，可以为C、C++、Objective-C等语言提供代码补全、跳转等服务。
 作为知名C++ completer，可以与clangd配合工作的编辑器插件不在少数。在Vim编辑器上就有YCM、vim-lsp等插件
 
+
+###########################################################################################
+YouCompleteMe安装
+步骤：
+1.Plug 'ycm-core/YouCompleteMe' 用vim-plug插件管理器来安装, 在vimrc里
+2.执行完成后，进入文件夹YouCompleteMe中，执行python run_tests.py来查一下是否可以正常安装
+3.执行python install.py --clangd-completer安装支持c语言自动补全
+4.在vimrc中配置let g:ycm_global_ycm_extra_conf='~/.vim/.ycm_extra_conf.py'
+  在ycm配置文件.ycm_global_ycm_extra_conf.py的flags里加入如下两行
+  '-I',
+  '你想要引用的include目录的绝对路径'
+注，如果系统中没有安装clang, clangd没有关系，在安装ycm时其会将需要的第三方库自动下载安装，比如
+这里的clang, clangd。
+另外，上面的步骤2，如果不执行直接跳到3的话，可能也会安装成功，不是必须的。
+其他还有一些需要在vimrc中配置的, 直接在github上vim项目中找vimrc.
 
 
