@@ -214,3 +214,18 @@ YouCompleteMe安装
 其他还有一些需要在vimrc中配置的, 直接在github上vim项目中找vimrc.
 
 
+###########################################################################################
+pip3安装python所需插件flake8
+这个是我在执行ycm安装前使用run_tests.py检查时提示缺少的一个python程序，
+一般情况下，python里少的插件，可以使用
+pip3 install someone 安装，比如flake8的安装pip3 install flake8
+pip3是一段Python script, 其存放于/usr/bin/pip3
+
+
+###########################################################################################
+hamcrest
+这个hamcrest在pip3 install时是找不到的，在pacman里也安装不了，所以需要下载源文件安装
+https://github.com/hamcrest/PyHamcrest/archive/V2.0.2.zip
+我用的是python语言版本的，还有其他的，如java.
+将其解压后进入PyHamcrest-2.0.2，执行python setup.py install来安装hamcrest
+

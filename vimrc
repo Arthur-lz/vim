@@ -21,7 +21,7 @@ set indentexpr=
 set foldmethod=indent
 set foldlevel=99
 set foldenable  " 允许折叠
-set formatoptions-=tc
+"set formatoptions-=tc
 set splitright
 set splitbelow
 set nocompatible  "去掉讨厌的有关vi一致性模式，避免以前版本的一些bug和局限
@@ -51,8 +51,44 @@ Plug 'honza/vim-snippets'
 "Plug 'godlygeek/tabular' 
 " markdown-preview用于实时预览正在编辑的md文件，for跟的参数表示只有打开markdown类型的文件时vim才加载下面的这插件,提升vim效率
 Plug 'iamcco/markdown-preview.nvim', { 'do': 'cd app && yarn install', 'for': ['markdown', 'vim-plug']}
+"Plug 'xavierd/clang_complete'
+"Plug 'justmao945/vim-clang'
+"Plug 'prabirshrestha/vim-lsp'
+Plug 'ycm-core/YouCompleteMe'
 call plug#end()
 "=============================================================================================
+"
+"let g:ycm_server_python_interpreter='/usr/bin/python'
+" ycm 配置
+
+	let g:ycm_use_clangd = 1 
+	let g:ycm_global_ycm_extra_conf='~/.vim/.ycm_extra_conf.py'
+        let g:ycm_key_list_select_completion=['<c-n>']
+        let g:ycm_key_list_previous_completion=['<c-p>']
+ 
+        let g:ycm_confirm_extra_conf=0 "关闭加载.ycm_extra_conf.py提示
+        let g:ycm_collect_identifiers_from_tags_files=1 " 开启 YCM 基于标签引擎
+        let g:ycm_min_num_of_chars_for_completion=1 " 从第1个键入字符就开始罗列匹配项
+        let g:ycm_cache_omnifunc=0 " 禁止缓存匹配项,每次都重新生成匹配项
+ 
+        let g:ycm_seed_identifiers_with_syntax=1 " 语法关键字补全
+"         nnoremap <F6> :YcmForceCompileAndDiagnostics<CR> "force recomile with syntastic
+        "nnoremap <leader>lo :lopen<CR> "open locationlist
+        "nnoremap <leader>lc :lclose<CR>    "close locationlist
+ 
+        "inoremap <leader><leader> <C-x><C-o>
+        let g:ycm_complete_in_comments = 1 "在注释输入中也能补全
+        let g:ycm_complete_in_strings = 1 "在字符串输入中也能补全
+        let g:ycm_collect_identifiers_from_comments_and_strings = 0 "注释和字符串中的文字也会被收入补全
+ 
+        let g:ycm_max_num_identifier_candidates = 50
+        let g:ycm_auto_trigger = 1
+ 
+        let g:ycm_error_symbol = 'X'
+        let g:ycm_warning_symbol = 'W'
+
+	autocmd FileType cpp,hpp,h,c :call coc#config("suggest.autoTrigger", "none")
+	autocmd FileType cpp,hpp,h,c let b:coc_suggest_disable=1
 "
 let g:mkdp_browser = ''
 let g:gitgutter_enabled=1
@@ -81,6 +117,17 @@ nnoremap <LEADER>g- :GitGutterPrevHunk<CR>
 nnoremap <LEADER>g= :GitGutterNextHunk<CR>
 "
 "gitgutter config end.==============================
+"-- omnicppcomplete setting --
+"set completeopt=menu,menuone,preview
+"let OmniCpp_MayCompleteDot = 1 " autocomplete with .
+"let OmniCpp_MayCompleteArrow = 1 " autocomplete with ->
+"let OmniCpp_MayCompleteScope = 1 " autocomplete with ::
+"let OmniCpp_SelectFirstItem = 2 " select first item (but don't insert)
+"let OmniCpp_NamespaceSearch = 2 " search namespaces in this and included files
+"let OmniCpp_ShowPrototypeInAbbr = 1 " show function prototype  in popup window
+"let OmniCpp_GlobalScopeSearch=1
+"let OmniCpp_DisplayMode=1
+"let OmniCpp_DefaultNamespaces=["std"]
 "
 "source markdownrc
 "
@@ -89,7 +136,8 @@ color snazzy "这一句必须放在 let g:SnazzyTransparent=1后面，否则透�
 "
 "nmap <leader>c<space> NERDCommenterToggle
 "设置linux4.0.1内核的ctags索引
-set tags=/home/arthur/source/linux-4.0.1/tags
+set tags=/home/arthur/esd/licheepi/linux/zero-4.10.y/tags
+"set tags=/home/arthur/linux/source/linux-4.0.1/tags
 " 使用F2键来执行Ctrl+w+w, 也就是切换同一个终端下的不同分屏
 nmap <F2> <C-w>w
 " tagbar设置===================================================
@@ -138,6 +186,13 @@ nmap <silent> gd <Plug>(coc-definition)
 nmap <silent> gy <Plug>(coc-type-definition)
 nmap <silent> gi <Plug>(coc-implementation)
 nmap <silent> gr <Plug>(coc-references)
+" clangd配置
+
+"end clang配置
+filetype plugin indent on 
+
+"打开文件类型检测, 加了这句才可以用智能补全
+
 "coc config end.
 "
 if has("persistent_undo")

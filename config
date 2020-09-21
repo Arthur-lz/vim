@@ -61,7 +61,7 @@ bindsym $mod+Ctrl+m exec alacritty -e 'alsamixer'
 #bindsym $mod+Ctrl+b exec alacritty -e 'bmenu'
 #bindsym $mod+c exec google-chrome-stable
 bindsym $mod+d exec pcmanfm
-#bindsym $mod+Shift+f exec ranger
+bindsym $mod+Shift+z exec ranger
 #bindsym $mod+d exec gksu pcmanfm
 #bindsym $mod+F5 exec alacritty -e 'mocp'
 #bindsym $mod+t exec --no-startup-id pkill compton
@@ -217,7 +217,8 @@ bar {
 	position top
 }
 
-exec_always feh --bg-scale /usr/share/backgrounds/manjaro-wallpapers-18.0/manjaro-cat.jpg
+exec_always feh --bg-scale /usr/share/backgrounds/wallpapers-2018/summer-time.jpg
+#exec_always feh --bg-scale /usr/share/backgrounds/manjaro-wallpapers-18.0/manjaro-cat.jpg
 #exec_always feh --bg-scale /usr/share/backgrounds/gnome/Stripes.jpg
 #exec_always feh --bg-scale /usr/share/backgrounds/wallpapers-juhraya/Dutch_Sunset_By_Rutger_Heijmerikx.jpg
 #exec feh --bg-scale /usr/share/backgrounds/wallpapers-juhraya/Albero_Del_Pepe_by_Harisont.jpg
