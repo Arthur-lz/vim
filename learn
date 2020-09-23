@@ -229,3 +229,16 @@ https://github.com/hamcrest/PyHamcrest/archive/V2.0.2.zip
 我用的是python语言版本的，还有其他的，如java.
 将其解压后进入PyHamcrest-2.0.2，执行python setup.py install来安装hamcrest
 
+###########################################################################################
+lspci
+查看所有pci设备信息
+
+
+###########################################################################################
+安装cscope
+sudo pacman -S cscope
+cscope一些常用的命令
+:cw  打开quickfix窗口
+:cn 下一个匹配项
+:cp 上一个匹配项
+

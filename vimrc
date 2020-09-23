@@ -84,8 +84,8 @@ call plug#end()
         let g:ycm_max_num_identifier_candidates = 50
         let g:ycm_auto_trigger = 1
  
-        let g:ycm_error_symbol = 'X'
-        let g:ycm_warning_symbol = 'W'
+        let g:ycm_error_symbol = '>>'
+        let g:ycm_warning_symbol = '>'
 
 	autocmd FileType cpp,hpp,h,c :call coc#config("suggest.autoTrigger", "none")
 	autocmd FileType cpp,hpp,h,c let b:coc_suggest_disable=1
@@ -135,9 +135,13 @@ let g:SnazzyTransparent=1
 color snazzy "这一句必须放在 let g:SnazzyTransparent=1后面，否则透明背景失效！！
 "
 "nmap <leader>c<space> NERDCommenterToggle
+set tags=/home/arthur/linux/driver/net/r8168/src/tags
+"set tags+=/home/arthur/linux/src/linux-5.8.9/tags
+"set tags=/home/arthur/linux/driver/net/e1000e-3.8.4/src/tags
 "设置linux4.0.1内核的ctags索引
-set tags=/home/arthur/esd/licheepi/linux/zero-4.10.y/tags
-"set tags=/home/arthur/linux/source/linux-4.0.1/tags
+"set tags=/home/arthur/esd/licheepi/linux/zero-4.10.y/tags
+
+set tags+=/home/arthur/linux/src/linux-4.0.1/tags
 " 使用F2键来执行Ctrl+w+w, 也就是切换同一个终端下的不同分屏
 nmap <F2> <C-w>w
 " tagbar设置===================================================
@@ -199,3 +203,31 @@ if has("persistent_undo")
     set undodir=$HOME/.config/undobak/
     set undofile
 endif
+
+"cscope配置
+if has("cscope")
+	set csprg=/usr/bin/cscope
+	set csto=1
+	set cst
+	set nocsverb
+	if filereadable("cscope.out")
+		cs add cscope.out
+	endif
+	set csverb
+endif
+set cscopequickfix=s-,c-,d-,i-,t-,e-
+nmap <silent><F7> :cs find s <C-R>=expand("<cword>")<CR><CR>
+nmap <silent><F3> :cs find t <C-R>=expand("<cword>")<CR><CR>
+nmap <silent><F4> :cs find c <C-R>=expand("<cword>")<CR><CR>
+
+"下一个匹配的
+nmap <C-n> :cn<CR>
+"前一个匹配的
+nmap <C-p> :cp<CR> 
+"打开quickfix窗口
+nmap <C-j> :cw<CR> 
+"关闭quickfix窗口
+nmap <C-k> :cclose<CR> 
+
+	
+"cscope配置结束 
