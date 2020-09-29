@@ -178,3 +178,16 @@ There are some dogs and cats, oh, and a pigs.
 
 #### ldd
 > 查看程序依赖的动态库有哪些. (注意， 需要绝对路径，或者在程序目录下)
+
+#### cat /proc/kallsyms
+> 查看内核导出的符号表
+
+#### ls -l /sys/module/你想查看的内核模块名称/parameters/
+> 查看内核模块，某一个模块的参数列表
+
+#### mknod file type major minor
+>手动生成设备结点, 如: mknod /dev/test1 c 200 0, 表示创建设备结点test1, c表示字符型设备(b为块设备)，主设备号200, 次设备号0
+
+> linux中所有的设备结点都放在/dev/目录下，/dev/是基于RAM的虚拟文件系统，是动态生成的，使用devtmpfs虚拟文件系统挂载的。
+
+

@@ -11,7 +11,7 @@
 * ohmyfish
 > curl -L https://get.oh-my.fish > install
 
-> fish install --path=~/.local/share/omf --config=~/.config/omf
+> fish install --path=\~/.local/share/omf --config=\~/.config/omf
 * alacritty
 * compton
 * feh
@@ -30,6 +30,7 @@
 * gcc-9, gcc-8
 * cgdb
 * gdb-multiarch
+* qemu
 * anjuta
 ### 系统配置
 * i3的配置
