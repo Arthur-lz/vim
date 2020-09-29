@@ -264,3 +264,23 @@ qemu-x86_64  仅仅模拟CPU
 qemu-system-x86_64 模拟整个PC
 
 
+###########################################################################################
+grep 搜索文件里面的内容
+
+grep "printf" x.c x.h    表示查找文件x.c和x.h文件里面是否有字符串printf
+
+
+
+###########################################################################################
+创建一个磁盘文件、格式化、写入数据、压缩全过程脚本:
+sudo dd if=/dev/zero of=ramdisk bs=1M count=32   初始化文件ramdisk(块大小1M，块数量32,用0字符填充)，即初始化一个每块1M总计32M的文件
+sudo mkfs.ext4 -F ramdisk                        格式化ramdisk文件
+sudo mkdir -p tmpfs
+sudo mount -t ext4 ramdisk ./tmpfs/  -o loop     将文件夹tmpfs挂到ramdisk上
+sudo cp -raf rootfs/*  tmpfs/                    向tmpfs文件夹写入文件，这个过程就等于向ramdis里写数据
+sudo umount tmpfs                                取消挂载
+sudo gzip --best -c ramdisk > ramdisk.gz         将ramdisk压缩
+
+
+###########################################################################################
+
