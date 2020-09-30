@@ -190,4 +190,25 @@ There are some dogs and cats, oh, and a pigs.
 
 > linux中所有的设备结点都放在/dev/目录下，/dev/是基于RAM的虚拟文件系统，是动态生成的，使用devtmpfs虚拟文件系统挂载的。
 
+#### lsdblk
+> 查看磁盘分区
 
+#### fdisk -l
+>  fdisk是一个创建和维护分区表的程序，它兼容DOS类型的分区表、BSD或者SUN类型的磁盘列表
+> fdisk用于磁盘管理用的
+
+#### dialog
+> sudo pacman -S dialog
+
+#### wifi-menu
+> 用于设置无线
+
+
+#### screenfetch
+> 有点酷的系统概要
+
+#### ls /sys/firmware/
+> 查看系统启动模式，如果有efi，则是uefi启动，否则bios启动。
+
+#### timedatectl set-ntp true
+> 同步系统时间
