@@ -31,6 +31,9 @@ set autoindent
 set cindent
 au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif"
 "=============================================================================================
+"安装vim-plug  
+"curl -fLo ~/.vim/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+"
 call plug#begin('~/.vim/plugged')
 "vim打开文件时，显示在vim最下面的状态栏
 Plug 'vim-airline/vim-airline'
