@@ -283,4 +283,5 @@ sudo gzip --best -c ramdisk > ramdisk.gz         将ramdisk压缩
 
 
 ###########################################################################################
-
+windows上可以使用工具xshell, xftp来连接到远程linux服务器
+在linux上配置好sshd, 它使用22号端口, 这样上面的xshell,sftp就可以连接到远程linux了
