@@ -190,7 +190,7 @@ There are some dogs and cats, oh, and a pigs.
 
 > linux中所有的设备结点都放在/dev/目录下，/dev/是基于RAM的虚拟文件系统，是动态生成的，使用devtmpfs虚拟文件系统挂载的。
 
-#### lsdblk
+#### lsblk
 > 查看磁盘分区
 
 #### fdisk -l
@@ -212,3 +212,21 @@ There are some dogs and cats, oh, and a pigs.
 
 #### timedatectl set-ntp true
 > 同步系统时间
+
+#### chsh
+> 切换shell
+
+> 下面举例说明，切换当前用户的shell为fish
+
+```sh
+chsh -s /usr/bin/fish
+```
+
+> 可以查看/etc/passwd来确认用户的shell是什么
+
+#### 不同用户使用vim的配置
+* 以操作用户user1为例，将.vim文件夹拷贝到/home/user1/下
+* 修改.vim所有者
+```sh
+chown -R user1:user1 /home/user1/.vim/
+```
