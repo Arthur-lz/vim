@@ -56,18 +56,30 @@ git diff
 git show
 git log  显示提交日志
 
-########################################################################################################
+### 
 ```sh
 # 输入用户名git config --global user.name "yourname"  
 # 输入邮箱git config --global user.email "youremail" 
 # 消除由于Windows和Linux拼图中换行符的差异导致的问题git config --global core.autocrlf false 
 # 消除由于路径或是文件名包含中文导致的乱码问题git config --global core.quotepath off
 # 消除gui界面中文乱码问题，如果只使用命令行的话不用设置这个git config --global gui.encoding utf-8
-# 配置ssh的秘钥，输完之后一路回车ssh-keygen -t rsa -C "youremail"
-# 启用ssh-agenteval `ssh-agent`
-# 添加秘钥ssh-add ~/.ssh/id_rsa
-# 将它添加到一直的key列表中ssh-add -l
-# 打开公钥文件，拷贝公钥，添加到自己的GitHub账户上去cat ~/.ssh/id_rsa.pub
+```
+
+### git ssh key
+```sh
+ssh-keygen -t rsa -C "youremail" 	# 配置ssh的秘钥，输完之后一路回车
+ssh-agent  				# 启用ssh-agenteval 
+ssh-add ~/.ssh/id_rsa			# 添加秘钥
+sh-add -l 				# 将它添加到一直的key列表中
+cat ~/.ssh/id_rsa.pub			# 打开公钥文件，拷贝公钥，添加到自己的GitHub账户上去
+```
+
+* 修改.git文件夹下config中的url 
+```sh
+[remote "origin"]
+           #url = https://github.com/youraccount/xxx.git 	#这是修改前的
+            url = git@github.com:youraccount/xxx.git		#这是修改后的
+```
 
 
 
