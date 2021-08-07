@@ -66,20 +66,49 @@ git log  显示提交日志
 ```
 
 ### git ssh key
+* 1.进入~/.ssh目录配置ssh的秘钥，输完之后一路回车
 ```sh
 ssh-keygen -t rsa -C "youremail" 	# 配置ssh的秘钥，输完之后一路回车
+```
+* 2.启用ssh-agenteval
+```sh
 ssh-agent  				# 启用ssh-agenteval 
-ssh-add ~/.ssh/id_rsa			# 添加秘钥
-sh-add -l 				# 将它添加到一直的key列表中
+```
+
+* 3.添加生成的 SSH key 到 ssh-agent
+```sh
+ssh-add ~/.ssh/id_rsa 
+#sh-add -l 				# 将它添加到一直的key列表中
+```
+
+* 4.登陆Github, 添加 ssh pub key
+```sh
 cat ~/.ssh/id_rsa.pub			# 打开公钥文件，拷贝公钥，添加到自己的GitHub账户上去
 ```
 
-* 修改.git文件夹下config中的url 
+* 5.测试
+```sh
+ssh -T git@github.com			# 测试
+```
+
+> 你将会看到：
+
+```
+The authenticity of host 'github.com (207.97.227.239)' can't be established.
+RSA key fingerprint is 16:27:ac:a5:76:28:2d:36:63:1b:56:4d:eb:df:a6:48.
+Are you sure you want to continue connecting (yes/no)?
+```
+> 选择 yes
+
+> 如果看到Hi后面是你的用户名，就说明成功了
+
+* 6.修改.git文件夹下config中的url 
 ```sh
 [remote "origin"]
            #url = https://github.com/youraccount/xxx.git 	#这是修改前的
             url = git@github.com:youraccount/xxx.git		#这是修改后的
 ```
 
+* 7.可以git push了
 
 
