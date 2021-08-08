@@ -253,11 +253,30 @@ cat somefile | git hash-object --stdin
 git gc
 ```
 
-# 第6 章
+# 第6章
+## 6.2 开始使用分支
+* git branch 
+> 查看当前项目所有分支
 
+* git branch someone
+> 创建一个名为someone的分支
 
+* git branch -m oldname newname
+> 修改分支名称oldname为newname
 
+* git branch -d someone
+> 删除分支someone
 
+> 如果被删的分支有合并未完成，则无法使用-d来删除分支，此时需要使用-D来强制删除分支 
+
+* git branch -D someone
+> 强制删除分支someone
+
+* 没有什么分支是不可以删除的
+> master分支也可以删除，它只是默认分支，没有什么特别
+
+* git checkout branchname
+> 切换分支到branchname
 
 
 
