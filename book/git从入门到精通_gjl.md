@@ -278,8 +278,19 @@ git gc
 * git checkout branchname
 > 切换分支到branchname
 
+## 6.3 对分支的误解
+* Git中的分支并不是通过复制目录或文件来进行改动的，分支就是一张贴纸，贴在某个commit上而已
+* 一个分支不够就来两个吧
+> 创建新分支前，HEAD指向master，而master贴在最近一次的commit上
+> 刚创建的分支newBranch与master分支贴在同一个地方
 
+> 接下来执行git checkout newBranch命令，切换到newBranch分支。此时，HEAD转而指向newBranch分支，表示newBranch是当前的分支
 
+> 接着进行一次commit，这个新的commit会指向前一个commit，然后newBranch分支上的贴纸就会被撕下来，转而贴到最新的那个commit上；当然HEAD也是一样
+
+* 切换分支不会影响已经在工作目录中的那些改动
+
+## 6.4 合并分支
 
 
 
