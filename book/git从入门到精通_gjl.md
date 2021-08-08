@@ -170,6 +170,93 @@ git rm file1 --cached 			#此命令不会执行rm file1, 即git不再追踪文�
 
 
 
+## 5.14 不小心使用hard模式reset了某个commit，还救得回来吗?
+> 在执行reset前一定要确认工作区中的内容已经存到git存储库了，否则reset --hard会被删除，如果不加--hard参数不会删除工作区的，但会删除暂存区的
+
+* 1.退回reset前
+
+* 2.使用reflog
+> 切换分支或reset都会让HEAD移动，而HEAD移动时会在reflog中留下一条记录
+
+> git log命令加上参数-g，也可以进行reflog
+
+## 5.15 HEAD是什么
+* HEAD简介
+> HEAD指向某一个分支，通常可以把它当作“当前所在分支”来看
+
+> 在.git目录有一个HEAD文件
+
+```
+cat .git/HEAD
+ref: refs/heads/master			# 从文件可以看出，HEAD当前正指向master分支
+cat .git/refs/heads/master		# master分支是一个40个字节的文件
+```
+
+## 5.16 可以只commit一个文件的部分内容吗
+* git add -p
+> 在add命令中增加参数-p，Git就会询问是否要把这个区域加到暂存区，如果选择y则把整个文件加进支。如果只想送出部分内容，选择e，接着会出现编辑器让你选择想要加到暂存区的的区域
+
+## 5.17 SHA-1值是怎么算出来的？
+* SHA-1是一种杂凑算法
+> 计算结果通常以40个十六进制的数字表示
+
+> 特点，输入一样的值，就有一样的输出值
+
+* 使用git内置的hash-object命令计算SHA-1值
+```sh
+echo "hello, lz" | git hash-object --stdin
+cat somefile | git hash-object --stdin
+```
+
+## 5.18 .git目录中有什么？Part 1
+* Git中的4种对象
+> bolb对象
+
+> tree对象
+
+> commit对象
+
+> tag对象
+
+* 小结
+> 把文件加入Git之后，文件的内容会被转成blob对象存储
+
+> 目录及文件名会存放在tree对象内，tree对象会指向blob对象或其他的tree对象
+
+> commit对象会指向某个tree对象。除了第一个commit，其他的commit都会指向前一次的commit对象
+
+> Tag对象会指向某个commit对象
+
+> 分支虽然不属于这4种对象之一，但它会指向某个commit对象
+
+> 往git服务器上推送之后，在.git/refs下就会多出一个remote目录，里面放的是远端的分支，基本上与本地分支类似，同样也会指向某个commit对象
+
+> HEAD也不属于这4种对象之一，它会指向某个分支
+
+## 5.19 .git目录中有什么？Part 2
+* Git在checkout时的变化
+> 当checkout到另一个commit时，可能会出现detached HEAD情况，这是因为目标commit没有分支指着
+
+> Git 根据这条git checkout somecommitnum，把原本放在.git/objects中以SHA-1计算命令的目录及文件，一个一个地复原成原来的样子
+
+> git 不是做差异备份。在Git切换commit时会像拎葡萄一样整串抽出来，所以checkout效率相对较高，因为它不需要一个一个的拼凑历史记录（差异备份的需要拼凑）
+
+> git的这种方式存放文件，就算只改了一字也会做出一个新的对象，那会不会很浪费空间？所以Git提出了资源回收机制，启动该机制时，Git会非常有效率的压缩对象。
+
+* git什么时候会自动触发资源回收机制
+> (1) 当.git/objects目录的对象或打包过的packfile数量过多时，Git会自动触发资源回收命令
+
+> (2) 当执行git push命令把内容推至远端服务器时
+
+* git 手动触发资源回收机制
+```sh
+git gc
+```
+
+# 第6 章
+
+
+
 
 
 
