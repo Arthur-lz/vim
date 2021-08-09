@@ -291,6 +291,161 @@ git gc
 * 切换分支不会影响已经在工作目录中的那些改动
 
 ## 6.4 合并分支
+* git merge someone
+> 如果想要用master分支来合并someone分支，主要先切换回master分支。someone分支有最新的commit，而在master分支中没有，所以现在的场景是让master也具有与someone分支上新增的那些commit
+
+### A合并B，与B合并A有什么不同？
+* 第一类情况，A、B都是来自master分支，那么一定是master分支收割A、B分支
+* 第二类情况，A、B都是来自master分支，那么如果是A、B合并，此时Git会创建一个commit同时指向这两个分支A、B
+> 假设由A来合并B分支
+
+```sh
+git checkout A			# 先切换到分支A
+git merge B			# 合并分支B，此时Git会创建一个新的commit对象Nc同时指向A原来的commit对象，又指向B的commit对象，而A最终会贴到Nc上
+```
+
+> 有哪里不一样？就是Git会额外生成一个commit对象Nc，Nc对象会有两个老爸，谁合并谁就会在前面的区别
+
+## 6.5 为什么我的分支没有“小耳朵”
+> 非快转模式合并的好处是可以完整保留分支的样子
+
+> git merge x --no-off, 参数--no-off指不要使用快转模式合并，这样会额外做出一个commit对象
+
+## 6.6 合并过的分支要保留吗？
+* 都可以
+> 合并过的分支想删就删, 删除分支只是把一张贴纸撕下来而已, 被贴纸贴的东西不会因为撕下贴纸而消失
+
+* 没有被合并的分支就是另一回事了
+
+## 6.7 不小心把没有合并的分支删除了救得回来吗？
+* 有一点要明确，删除掉分支后，原来的commit都还在.删除分支后，只是因为你不知道或没记下那些commit的SHA-1值，所以不容易再拿来利用
+* 可以使用以下命令来把已经删除分支所对应的commit找到
+```sh
+git branch newBranch b329920		# b329929是被删除分支的commit对象的SHA-1值, 这是你知道被删除分支的commit的SHA-1值的情况
+```
+
+* 如果没有把刚刚删除的那个分支的SHA-1值记下来怎么办？
+> 可以使用git reflog命令来查找，reflog默认会保留30天
+
+### 其实所谓的“合并分支”，合并的并不是“分支”
+> 合并分支其实是合并“分支指向的那个commit”
+
+## 6.8 另一种合并方式（使用rebase）
+* git rebase dog
+> cat现在要重新定义cat的参考基准，并且将使用dog分支作为cat的新参考基准
+
+* 谁rebase谁会有区别吗？
+> 从最后的文件来说无区别
+
+> 就历史记录来说有区别，谁rebase谁，会造成历史记录的先后顺序不同
+
+### 怎么取消rebase
+* 1.使用reflog
+
+* 2.使用ORIG_HEAD，它会记录“危险操作”之前的HEAD位置
+> 分支合并或reset都是危险操作
+
+* 3.使用rebase的时机
+> 如果已经push出去了，且因为rebase等于改动了历史记录，改动已经推出去的历史记录可能会给别人带来困扰，所以推出去的如果没有必要则不使用rebase
+
+## 6.9 合并发生冲突了怎么办
+## 6.10 为什么说在Git中开分支“很便宜”
+> 分支的文件保存在.git/refs/heads/中
+
+> 分支就是一个40字节的文件，所以不贵
+
+## 6.11 Git如何知道现在是在哪一个分支
+* cat .git/HEAD
+
+## 6.12 HEAD也有缩写
+* git 1.8.5版本之后的版本，在使用Git时，可以用@来代替HEAD
+```sh
+git reset HEAD^
+git reset @^		# 与上面的等效
+```
+
+* ORIG_HEAD是什么？
+
+## 6.13 可以从过去的某个commit再创建一个新的分支吗？
+* git branch newBranch commit_SHA-1
+> newBranch是新分支名
+
+> commit_SHA-1是过去的某个commit的SHA-1值
+
+* git checkout -b newBranch commit_SHA-1
+> 与git branch newBranch commit_SHA-1功能相同
+
+# 第7章 修改历史记录 
+# 第8章 标签
+## 8.1 使用标签
+* 什么时候使用标签？
+> 里程碑，如软件版本号之类的
+
+* 两种标签
+> 轻量标签，它指向的是某一个commit
+```sh
+git tag sometag commit_SHA-1
+```
+
+> 有附注标签，它指向的是某个tag对象，这个tag对象再指向那个commit
+
+```sh
+git tag sometag commit_SHA-1 -a -m "some message you want to say"
+
+* 删除标签
+```sh
+git tag -d sometag
+```
+
+## 8.2 标签与分支有什么区别
+> 留下的是标签，跟commit走的是分支
+
+> 标签放在.git/refs/tags/中
+
+> 分支放在.git/refs/heads/中
+
+# 第11章 使用Git Flow
+## 分支应用场景
+> 根据Git Flow的建议，分支主要分为Master、Develop、Hotfix、Release、Feature五个分支
+
+* 1.Master分支
+> 主要用来存放稳定、随时可上线的项目版本
+
+* 2.Develop分支
+> 是所有开发分支中的基础分支
+
+> 当要新增功能时，使用的Feature分支是从Develop分支分出去的
+
+* 3.Hotfix分支
+> 当在线产品发生紧急问题时，会从Master分支划出一个Hotfix分支进行修复
+
+> Hotfix分支修复完成之后，会合并回Master分支，同时合并一份到Develop分支
+
+* 4.Release分支
+> 当认为Develop分支足够成熟时，可以把Develop分支合并到Release分支
+
+> 在其中进行上线前的测试，测试完成后，Release分支将会同时合并到Master分支和Develop分支
+
+* 5.Feature分支
+> 如果要新增功能，就要使用Feature会。Feature分支从Develop分支分出。完成后合并回Develop分支
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
