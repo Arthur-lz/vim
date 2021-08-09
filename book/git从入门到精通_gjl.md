@@ -404,6 +404,98 @@ git tag -d sometag
 
 > 分支放在.git/refs/heads/中
 
+# 第10章 远端共同协作---使用GitHub
+## 10.2 将内容Push到GitHub上
+### 1.在GitHub上创建新项目(Create repository)
+> 要上传文件到GitHub, 需要先在上面创建一个新的项目
+
+> 存取权限中选择Private需要资费$7/月？
+
+### 2.把内容推送到远端点
+* 1) 首先，需要设置一个远端点
+```sh
+git remote add origin git@github.com:yourgithubaccount/yourgit_repository.git
+
+```
+> git remote指令主要进行与远端有关的操作
+
+> add 指令表示要加入一个远端点
+
+> origin是一个代名词，指的是后面的那串GitHub服务器的位置
+
+> 远端的节点默认使用origin这个名称; 如果是从服务器上clone下来的，其默认远端点名称就是origin; 这只是惯例，不用该名称或之后想更改都可以，例如改为七龙珠dragonball
+
+```sh
+git remote add dragonball git@github.com:yourgithubaccount/yourgit_repository.git
+```
+
+* 2)把内容推上去
+```sh
+git push -u origin master
+```
+> (1)把master分支的内容推向origin位置
+
+> (2)在origin远端服务器上，如果master不存在，就创建一个名为master的分支
+
+> (3)如果服务器上存在master分支，就会移动服务器上的master分支的位置，使它指到当前最新的commit上
+
+> (4)设置upstream，就是-u参数做的事
+
+* upstream是什么意思？
+> 上游，本质上就是另一个分支的名字而已
+
+> 在git中，每个分支可以设置一个上游分（最多一个上游），它会指向并追踪某个分支
+
+> 通常upstream会是远端服务器上的某个分支，但要设置成本地端的其他某个分支也可以
+
+> 如果设置了upstream，当下次执行git push指令时，就会用它来当默认值，例如
+
+```sh
+git push -u origin master	#就会把origin/master设置为本地master分支的upstream，当下次执行git push指令而不加任何参数时，Git就会猜出是要推往origin远端点，并且把master分支推上去
+```
+> 反之，如果没有设置upstream，则必须在每次push时都要告诉git要推的远端点是什么，如下这样
+
+```sh
+git push origin master 		# 如果不带参数origin master，则git就不知道该push什么分支，以及要push到哪里
+```
+
+* git push origin master与git push origin master:master指令效果相同
+> 这两个指令执行相同的操作：把本地的master分支推上去后，在服务器上更新master分支的进度；如果不存在该分支，就创建一个master分支。
+
+> 如果推上去之后想更改名称，可以把后面的名称改掉
+
+```sh
+git push origin master:cat		# 这样把本地master分支推上去之后，就不会在线创建master分支了，而是创建一个名为cat的分支（或更新进度）
+```
+
+## 10.3 Pull下载更新
+* Pull = Fetch + Merge
+### Fetch
+* 要做的第一件事是：把当前线上有但本地没有的内容抓一份下来，同时移动origin相关分支（这里是origin/master）
+
+* 用远端分支更新本地分支
+```
+git merge origin/master
+```
+
+### git pull -rebase
+> 在多人共同开发时，大家都在自己的分支进行commit，所以拉回来用一般的方式合并时，常会出现为了合并而生成额外commit的情况。为了合并而生成的commit本身并没有什么问题，但如果不想要这个额外的commit，可考虑使用rebase方式进行合并
+
+## 10.4 为什么有时候推不上去？
+###解决办法
+* 1.第一招：先拉再推
+* 2.第二招：无视规则，强推
+```sh
+git push -f
+```
+
+## 10.7与其他开发者的互动---使用PullRequest（PR）
+## 10.9怎么删除远端的分支
+* git push origin :youwantdel
+> 是的，就是在分支前面加上冒号。其实明白git push origin master:master，也就明白为什么这样写了
+
+> 这条指令的本质就是推一个空分支到远端的youwantdel分支，这变相地把youwantdel分支删除了
+
 # 第11章 使用Git Flow
 ## 分支应用场景
 > 根据Git Flow的建议，分支主要分为Master、Develop、Hotfix、Release、Feature五个分支
