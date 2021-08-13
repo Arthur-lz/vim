@@ -404,6 +404,91 @@ git tag -d sometag
 
 > 分支放在.git/refs/heads/中
 
+# 第9章 其他常见的情况及一些冷知识
+## 9.1 手边的工作做到一半，临时要切换到别的任务
+* 1. 先commit当前进度, 接着使用reset 命令
+```sh
+# 现在的工作在master分支
+git add --all					# 第一步, 保存当前工作进度
+git commit -m "not finish yet"			# 第一步, 保存当前工作进度
+						# 第二步, 转去做其他工作 (需要切到别的分支，如cat）
+...
+git checkout master				# 第三步, 切换回原来的分支
+git reset HEAD^					# 第四步, reset回去; 这是书中这样写的，但为什么要reset呢？直接到第三步切回原来的分支不就可以继续原来的工作继续了吗？
+```
+
+* 2.使用stash 
+```sh
+# 假设现在工作的分支是master
+git stash					# 这一句执行完后，当前工作目录下的文件改动将“消失”，其实stash把它们保存起来了
+git stash list					# 这一句是用来查stash中保存了什么，显示的结果没有那么具体
+						# 现在可以去处理其他工作了，如切到别的分支cat
+...
+git checkout master				# 切换回原来的分支
+git stash pop stash@\{0\}			# 把stash捡回来
+```
+> 个人建议使用第一种
+
+## 9.2 不小心把账号密码放在Git中了，想把它删除该怎么办
+* 首先要明确，在git中管理的文件都存在哪里（或存在哪些对象上）
+> 本地工作目录中
+
+> blob对象
+
+> commit对象
+
+> reflog
+
+### 1. 直接删除.git目录、再把密码文件删除、再commit
+> 无技术可言
+
+> 之前的所有commit记录全部消失不见，永久性消失的那种
+
+### 2. 使用filter-branch指令
+> 这是批量修改每一个commit对象
+
+```sh
+git filter-branch --tree-filter "rm -f config/passwd.txt"
+```
+> 1.filter-branch指令可以根据不同的filter,一个一个commit去处理
+
+> 2.这里使用了--tree-filter这个filter, 它可以在checkout到每个commit时执行指定的指令，执行完成后再自动重新commit。上面的例子，便是执行"强制删除config/passwd.txt"
+
+> 3.因为删除了某个文件，所以在那之后的commit都会重新计算，即产生一份新的历史记录，信息一旦加到git中，真的要把它删除并不容易
+
+### 3. 如果后悔了，怎样恢复到执行filter-branch指令之前的状态
+```sh
+git reset refs/original/refs/heads/master --hard
+```
+
+### 4. 如果已经推出去了
+> 如果推出去了就像泼出去的水一样收不回来，能做的就是使用git push -f指令重新强制推一份刚刚filter-branch过的commit上去
+
+### 5. 将其他分支的commit捡过来合并
+```sh
+git cherry-pick commit_id
+```
+
+### 6. 一次捡多个commit
+```sh
+git cherry-pick commit_id1 commit_id2 commit_id3
+```
+
+### 7. 捡过来的分支先不合并
+```sh
+git cherry-pick commit_id --no-commit
+```
+
+## 9.3 怎样把文件真正从git中移除
+
+
+
+
+
+
+
+
+
 # 第10章 远端共同协作---使用GitHub
 ## 10.2 将内容Push到GitHub上
 ### 1.在GitHub上创建新项目(Create repository)
