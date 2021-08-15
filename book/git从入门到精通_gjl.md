@@ -94,6 +94,7 @@ git status			#（4）查看一下foo1在Git中的状态
 ### 5.2.3 git add --all与git add .参数有什么不一样？
 #### 1.Git版本
 * Git 1.x版本
+
 |使用参数|新增文件|修改文件|删除文件|
 |:-|:-|:-|:-|
 |-all|Y|Y|Y|
@@ -101,6 +102,7 @@ git status			#（4）查看一下foo1在Git中的状态
 
 
 * Git 2.x版本之后
+
 |使用参数|新增文件|修改文件|删除文件|
 |:-|:-|:-|:-|
 |-all|Y|Y|Y|
@@ -376,6 +378,14 @@ git reset @^		# 与上面的等效
 > 与git branch newBranch commit_SHA-1功能相同
 
 # 第7章 修改历史记录 
+* reset, rebase, revert指令区别
+
+|指令|修改历史记录|说明|
+|:-|:-|:-|
+|reset|是|把当前状态设置成某个指定commit状态，通常用于尚未推出去的commit|
+|rebase|是|不管是新增、改动、删除commit，还是用来整理、编辑还没有推出去的commit，都相当方便，但通常只适用于尚未推出去的commit|
+|revert|是|新增一个commit来反转（或称为取消）另一个commit的内容，原来的commit依旧保留在历史记录中。虽然会因此而增加commit数量，但通常比较适用于已经推出去的commit，或者不允许使用reset或rebase来修改历史记录指令的情景（如多人开发的项目）|
+
 # 第8章 标签
 ## 8.1 使用标签
 * 什么时候使用标签？
