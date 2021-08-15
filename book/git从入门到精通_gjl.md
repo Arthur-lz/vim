@@ -480,14 +480,83 @@ git cherry-pick commit_id --no-commit
 ```
 
 ## 9.3 怎样把文件真正从git中移除
+### 1. 删除.git目录
+### 2. 使用rebase或filter-branch指令来整理
+### 3. 全部断干净
+```sh
+git filter-branch -f --tree-filter "rm -f test.yml"
+```
+> 命令中增加了-f参数，是要强制写filter-branch的备份点
 
+* 这里使用filter-branch指令把文件从工作目录中移除，这时文件test.yml的确不见了，但还有几个与资源回收有关的事情需要处理
 
+```sh
+rm .git/refs/original/refs/heads/masterg	# 这个文件还对刚刚做的filter-branch动作念念不忘，随时可以通过它再跳回去，所以要切断这条线
+```
 
+* 对这个文件念念不忘的还有reflog，所以也要清一下
+```sh
+git reflog expireg --all --expire=now	#这个指令是要求reflog立即过期（默认要30天），接着执行git fsck指令，就可以看到很多unreachable状态的对象了
 
+git fsck --unreachable
+Checking object directories: 100% (256/256), done.
+unreachable blob 8baef1b4abc478178b004d62031cf7fe6db6f903
 
+git gc --prune=now		# 这是启动git的资源回收机制，叫“垃圾车”过来，把它们立即运走
 
+git fsck			# 查一下
+Checking object directories: 100% , done.
+Checking objects: 100%, done.
+# 垃圾被运走后，再使用git reset commitID -hard命令恢复也是会失败，git已经找不到原来的那个SHA-1值了
+# 如果这些内容已经被推出去了，最后要再加一步，使用git push -f 把在线的记录覆盖
+```
 
+## 9.4 你知道git有资源回收机制吗
+* 在git中，每当把文件加到暂存区时，git便会根据文件内容制作出blob对象
+* 每当完成commit时，便会跟着生成所需的Tree对象和commit对象
+* 随着对象越来越多，当满足条件时，git会自动触发资源回收机制来整理这些对象，同时也会unreachable状态的对象清除, 这样除了能让这些备份的档案何种缩小，还能让对象的检索更有效率
 
+### danglingg与unreachable对象有什么不同？
+* unreachable对象：没有任何对象或指示标指向它，所以它是无法到达的。虽然它无法到达，但它可以指向其他对象
+
+* dangling对象：与unreachable对象一样，没有任何对象或指标指着它，它也没有指着其他对象，完全是悬在天边的一个对象
+
+## 9.5 断头（detached HEAD）是怎么一回事？
+### 1. 断头的原因
+* HEAD是指向某一个分支的指示标，可以把它当作当前所在的分支来看待
+
+* 正常情况下, HEAD会指向某一个分支，而分支会指向某一个commit，但HEAD偶尔会发生没有指到某个分支的情况，这种状态的HEAD便称为deatched HEAD
+
+* 之所以出现这种状态，原因如下
+> 使用checkout指令直接跳转到某个commit，而那个commit当前刚好没有分支指向它
+
+> rebase的过程其实也是处于不断的detached HEAD状态
+
+> 切换到某个远端分支时
+
+### 2. 在这种断头的状态下能做什么？
+> 其实这种状态没有什么特别的，只是HEAD刚好指向某个没有分支指着的commit罢了，这不影响操作git或进行commit
+
+* 影响的话，就是当HEAD回到其他分支以后，这个commit就不容易找到了（除非记下这个commit的SHA-1值）。如果一直不找它，过段时间以后它就会被git启动的资源回收机制收走。所以，如果还想留下这个commit，创建一个分支指向它即可
+
+> 可以明确的让Git创建一个分支指向某个commit
+
+```sh
+git branch branch_name commit_id
+# 或者如下这样也可以
+git checkout -b branch_name commit_id
+```
+
+### 3. 为什么切换到远端分支也会是断头状态
+> 前面提到，当HEAD没有指向某个分支时，它会呈现detached状态。更确切的说，应该是当HEAD没有指向某个本地的分支时，就会呈现断头状态
+
+### 4. 怎样脱离deatched HEAD状态
+* 只需要让HEAD有任何分支可以指向即可
+> 例如，让它回到master分支
+
+```sh
+git checkout master	# 这样HEAD就解除detached状态了
+```
 
 # 第10章 远端共同协作---使用GitHub
 ## 10.2 将内容Push到GitHub上
