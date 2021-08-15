@@ -550,6 +550,11 @@ git checkout -b branch_name commit_id
 ### 3. 为什么切换到远端分支也会是断头状态
 > 前面提到，当HEAD没有指向某个分支时，它会呈现detached状态。更确切的说，应该是当HEAD没有指向某个本地的分支时，就会呈现断头状态
 
+```sh
+git branch 		# 查本地分支
+git branch --remote	# 查远端分支
+```
+
 ### 4. 怎样脱离deatched HEAD状态
 * 只需要让HEAD有任何分支可以指向即可
 > 例如，让它回到master分支
