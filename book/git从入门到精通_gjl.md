@@ -378,6 +378,171 @@ git reset @^		# 与上面的等效
 > 与git branch newBranch commit_SHA-1功能相同
 
 # 第7章 修改历史记录 
+## 7.1 修改历史信息
+* --amend参数一修改最后一次commit信息
+### 1. 启动互动模式
+```
+* c1e2078 <guest> 7 秒钟之前 add f4
+* 18e939b <guest> 22 秒钟之前 add f3
+* b7a63dc <guest> 45 秒钟之前 add f1, f2
+```
+#### 第一步： 下面使用rebase命令来整理一下
+```sh
+$ git rebase -i b7a63dc
+```
+> -i参数是指要进入Rebase指令的互动模式，而后面的b7a63dc是指这次rebase指令的应用范围为“从现在到b7a63dc这个commit”，这个指令会弹出一个vim编辑器
+
+```
+pick 18e939b add f3
+pick c1e2078 add f4
+
+# Rebase b7a63dc..c1e2078 onto b7a63dc
+#
+# Commands:
+#  p, pick = use commit
+#  r, reword = use commit, but edit the commit message
+#  e, edit = use commit, but stop for amending
+#  s, squash = use commit, but meld into previous commit
+#  f, fixup = like "squash", but discard this commit's log message
+#  x, exec = run command (the rest of the line) using shell
+#
+# These lines can be re-ordered; they are executed from top to bottom.
+#
+# If you remove a line here THAT COMMIT WILL BE LOST.
+#
+# However, if you remove everything, the rebase will be aborted.
+#
+# Note that empty commits are commented out
+```
+> 注意，上面的顺序与git log指令的结果是相反的
+
+> 上面的pick是指“保留这次的commit，不做改动”
+
+#### 第二步，将上面的pick 18e939b add f3改成reword 18e939b add f3
+> 保存并退出vim后，会继续弹出一个新的vim，在这个vim中可以看原来的信息f3，在这个vim中可以编辑18e939b这次commit的信息
+
+> 如下是编辑完18e939b这次commit后保存并退出vim后，执行git log --oneline查看得到的18e939b的comment信息
+
+```
+815205e add f3, 这是rebase, reword后加的内容
+```
+> 可以发现，commit id的SHA-1值变了, 这里id的SHA-1值变化了也容易理解，因为commit id与commit时的信息有关，所以commit对象被替换了
+
+#### 其他，如果想取消这次的rebase
+```sh
+$ git reset ORIG_HEAD --hard
+```
+> 这样就会回到这前的rebase
+
+## 7.2 把多个commit合并成一个commit
+> 使用squash替换pick，会将squash所在行与上一行合并，如下所示
+
+### 第一步：执行git rebase -i b7a63dc, 弹出的vim内容截略内容如下,
+```
+pick 815205e add f3, 这是rebase, reword后加的内容
+pick a5d026b add f4, this is rebase , reword add comment.
+pick 4f65170 add f5
+pick 66eb458 add f6, f7
+```
+
+### 第二步：将pick替换成squash, 如下所示
+```
+pick 815205e add f3, 这是rebase, reword后加的内容
+pick a5d026b add f4, this is rebase , reword add comment.
+pick 4f65170 add f5
+squash 66eb458 add f6, f7
+```
+> 这里把最后一行的pick替换成squash了，这表示将66eb458这次commit与上面一行4f65170这次commit合并成一个commit, 保存并退出这个vim后，会弹出如下vim
+
+```
+# This is a combination of 2 commits.
+# The first commit's message is:
+
+add f5
+
+# This is the 2nd commit message:
+
+add f6, f7
+
+# 请为您的变更输入提交说明。以 '#' 开始的行将被忽略，而一个空的提交
+# 说明将会终止提交。
+#
+# 提交者：   arthur <arthur@localhost.localdomain>
+#
+# 头指针分离于 4f65170
+# 您正在将分支 'master' 变基到 'b7a63dc' 过程中编辑一个提交。
+#
+# 要提交的变更：
+#   （使用 "git reset HEAD^1 <file>..." 撤出暂存区）
+#
+#       新文件：    f5
+#       新文件：    f6
+#       新文件：    f7
+```
+> 这个vim是让你修改合并66eb458和4f65170这两次commit的消息, 改成如下这样, 保存并退出当前vim
+
+```
+add f5, f6, f7
+```
+
+> 现在执行git log --oneline查看一下
+
+```
+abaa019 <guest> 12 分钟之前 add f5, f6, f7
+a5d026b <guest> 36 分钟之前 add f4, this is rebase , reword add comment.
+815205e <guest> 36 分钟之前 add f3, 这是rebase, reword后加的内容
+b7a63dc <guest> 36 分钟之前 add f1, f2
+```
+> 可以看到原来的两个commit为66eb458和4f65170的已经不见了，只有一个合并后的abaa019的commit，其消息为add f5, f6, f7
+
+## 7.3 把一个commit拆解成多个commit
+> 把pick改成edit
+
+### 目标：把f05b602这次commit的两个文件f8, f9拆解成两个commit来执行
+```
+f05b602 <guest> 2 秒钟之前 add f8,f9
+abaa019 <guest> 12 分钟之前 add f5, f6, f7
+a5d026b <guest> 36 分钟之前 add f4, this is rebase , reword add comment.
+815205e <guest> 36 分钟之前 add f3, 这是rebase, reword后加的内容
+b7a63dc <guest> 36 分钟之前 add f1, f2
+```
+
+```
+#### 第一步：git rebase -i b7a63dc
+> 在弹出的vim中，将f05b602这次的commit前的pick改成edit，保存并退出vim
+```
+pick 815205e add f3, 这是rebase, reword后加的内容
+pick a5d026b add f4, this is rebase , reword add comment.
+pick abaa019 add f5, f6, f7
+edit f05b602 add f8,f9
+```
+#### 第二步：git reset HEAD^
+#### 第三步：git add f8
+#### 第四步：git commit -a -m "add f8"
+#### 第五步：git add f9
+#### 第六步：git commit -a -m "add f9"
+#### 第七步：git rebase --continue
+> 现在git log --oneline查一下log
+
+```
+17537ce <guest> 30 秒钟之前 add f9
+1091f08 <guest> 47 秒钟之前 add f8
+abaa019 <guest> 12 分钟之前 add f5, f6, f7
+a5d026b <guest> 36 分钟之前 add f4, this is rebase , reword add comment.
+815205e <guest> 36 分钟之前 add f3, 这是rebase, reword后加的内容
+b7a63dc <guest> 36 分钟之前 add f1, f2
+```
+
+## 7.4 想要在某些commit之间再加新的commit
+> 原理与前面的新增commit类似，只需要在想加commit的commit那一行将pick改成edit，之后保存退出vim，重复7.3中的第三步到第六步增加commit，之后rebase --continue即可
+
+## 7.5 想要删除某几个commit或调整commit的顺序
+### 调整commit顺序，执行git rebase -i b7a63dc
+> 在弹出的vim中，只需要修改pick各行的先后顺序，保存并退出vim即可
+
+### 删除commit, 执行git rebase -i b7a63dc
+> 在弹出的vim中，把想删除的commit前面的pick替换成drop(或者是直接删除对应的行也可以)保存并退出vim即可
+
 * reset, rebase, revert指令区别
 
 |指令|修改历史记录|说明|
